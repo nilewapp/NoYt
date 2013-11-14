@@ -27,7 +27,7 @@ import com.mooo.nilewapps.noyt.ServiceActor
  */
 object Boot extends App with SslConfig {
 
-  implicit val system = ActorSystem("SubYt")
+  implicit val system = ActorSystem("NoYt")
 
   /* Create and start the service actor */
   val handler = system.actorOf(Props[ServiceActor], "handler")
