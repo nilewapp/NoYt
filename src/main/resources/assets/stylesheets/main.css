@@ -1,0 +1,20 @@
+
+ul.feed-list {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1em;
+  text-indent: -1em;
+  font-size: 0.8em;
+}
+
+li.feed-item {
+  margin-bottom: 1em;
+}
+
+.feed-item-title {
+  
+}
+
+.feed-item-data {
+
+}

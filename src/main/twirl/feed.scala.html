@@ -1,0 +1,15 @@
+@(videos: Seq[com.mooo.nilewapps.noyt.data.Video])
+@main(title = "Feed") {
+  <h1>Feed</h1>
+  <ul class="feed-list">
+    @videos.map { v =>
+      <li class="feed-item">
+        <div class="feed-item-image">
+          <img width="196" src="https://i1.ytimg.com/vi/@v.id/mqdefault.jpg" alt="Thumbnail"></img>
+        </div>
+        <div class="feed-item-link"><a href="https://youtube.com/watch?v=@v.id">@v.title</a></div>
+        <div class="feed-item-data">@v.user Published On: @v.publishTime</div>
+      </li>
+    } 
+  </ul>
+}

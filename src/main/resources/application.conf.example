@@ -1,0 +1,31 @@
+akka {
+  loglevel = INFO
+}
+
+spray.can.server {
+  request-timeout = 20 s
+  ssl-encryption = on
+}
+
+http-server {
+  domain = "https://localhost:"${http-server.port}
+  interface = localhost
+  port = 8443
+}
+
+truststore {
+  path = /keystore.jks
+  pass = soulkey
+}
+
+assets {
+  dir = "/assets/"
+  stylesheets = ${assets.dir}"stylesheets/"
+  javascript = ${assets.dir}"javascript/"
+}
+
+http-proxy {
+  use-proxy = no
+  host = "127.0.0.1"
+  port = 8118
+}
