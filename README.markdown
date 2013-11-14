@@ -45,7 +45,7 @@ application.
 
         > re-start
 
-9. Access the application at `https://localhost:8443/<name of your favourite
+9. Access the application at `https://localhost:8443/feed/<name of your favourite
    youtube channel>` in any web browser.
 
 
