@@ -23,7 +23,7 @@ import spray.can.Http
 import com.mooo.nilewapps.noyt.ServiceActor
 
 /**
- *  Starts the server
+ * Starts the server.
  */
 object Boot extends App with SslConfig {
 

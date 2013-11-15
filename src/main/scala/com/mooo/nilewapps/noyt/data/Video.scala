@@ -15,6 +15,9 @@
  */
 package com.mooo.nilewapps.noyt.data
 
+/**
+ * Defines the information content of a Video.
+ */
 case class Video(
   title: Option[String] = None,
   duration: Option[String] = None,

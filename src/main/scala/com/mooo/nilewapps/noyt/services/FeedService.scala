@@ -26,10 +26,14 @@ import com.mooo.nilewapps.noyt.feeds.FeedGenerator._
 
 trait FeedService {
 
+  /**
+   * Returns a route to a video feed.
+   */
   def feed(channels: String): RequestContext => Unit = {
     parameters('maxResults.as[Int] ?) { maxResults =>
       respondWithMediaType(`text/html`) {
         complete {
+          /* Download, parse, aggregate and render feeds */
           feeds(channels.split('+'), maxResults.getOrElse(25)) map {
             html.feed.render(_).body
           }

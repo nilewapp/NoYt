@@ -40,5 +40,8 @@ class FeedGenerator {
 
 object FeedGenerator {
 
+  /**
+   * Helper method for static access to FeedGenerator.
+   */
   def feeds = new FeedGenerator().feeds _
 }

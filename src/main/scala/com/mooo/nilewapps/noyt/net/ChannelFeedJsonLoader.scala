@@ -20,12 +20,12 @@ import scala.concurrent.Future
 import com.typesafe.config._
 
 /**
- * Loads the HTML of a channels video feed.
+ * Defines a method to download a feed using the Youtube API.
  */
 class ChannelFeedJsonLoader(val gatherer: Gatherer) {
 
   /**
-   * Downloads the feed of a channel.
+   * Downloads the feed of a channel using the Youtube API.
    */
   def apply(channel: String, maxResults: Int): Future[Option[String]] = {
     gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults))
@@ -35,7 +35,7 @@ class ChannelFeedJsonLoader(val gatherer: Gatherer) {
 object ChannelFeedJsonLoader {
 
   /**
-   * Factory method.
+   * Returns a new ChannelFeedJsonLoader with a standard Downloader.
    */
   def downloadFeed =
     new ChannelFeedJsonLoader(new Downloader)

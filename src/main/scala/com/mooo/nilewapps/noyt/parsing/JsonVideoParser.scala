@@ -22,16 +22,32 @@ import spray.json._
 
 import com.mooo.nilewapps.noyt.data.Video
 
+/**
+ * Defines methods to parse the Json downloaded using the Google Youtube API.
+ */
 class JsonVideoParser extends VideoParser {
 
+  /**
+   * Defines the time format used in the Json data.
+   */
   val TimeFormat = "yyyy-MM-dd'T'HH:mm:SS.s'Z'"
 
+  /**
+   * Parses a String to a Date.
+   */
   def parseDate(date: String) =
     new SimpleDateFormat(TimeFormat).parse(date)
 
+  /**
+   * Parses a String into a Json object and queries the "feed" field which
+   * contains all the desired information.
+   */
   def feed(json: String) =
     json.asJson.asJsObject.getFields("feed").head.asJsObject
 
+  /**
+   * Returns the author of a feed from the "feed" Json object.
+   */
   def author(feed: JsObject) = feed.fields.get("author") match {
     case Some(JsArray(List(JsObject(authorFields), _*))) =>
       authorFields.get("name") flatMap {
@@ -44,18 +60,29 @@ class JsonVideoParser extends VideoParser {
     case _ => None
   }
 
+  /**
+   * Parses the "feed" Json object and returns a list of videos from the given
+   * information.
+   */
   def videos(feed: JsObject): Seq[Video] = {
+
+    /* Parse author */
     val auth = author(feed)
+
+    /* Parse videos in the "entry" field */
     feed.fields.get("entry") match {
       case Some(JsArray(entries)) => entries map {
+        /* Get information of one Video */
         _.asJsObject.getFields("id", "published", "title") map {
           case JsObject(fields) => fields.get("$t")
           case _ => None
         } map {
+          /* Unwrap the JsStrings into Strings */
           case Some(JsString(e)) => Some(e)
           case _ => None
         }
       } map { entry =>
+        /* Transform the list of Strings into a Video object */
         Video(
           id = entry.head.map(_.split("/").last),
           publishTime = entry(1).map(parseDate(_)),
@@ -66,6 +93,10 @@ class JsonVideoParser extends VideoParser {
     }
   }
 
+  /**
+   * Takes a Json formated String, parses the information and returns a list of
+   * Videos.
+   */
   def apply(jsonString: Option[String]): Seq[Video] = jsonString match {
     case Some(json) => videos(feed(json))
     case None => Seq()
@@ -74,5 +105,8 @@ class JsonVideoParser extends VideoParser {
 
 object JsonVideoParser {
 
+  /**
+   * Returns a new JsonVideoParser
+   */
   def parseFeed = new JsonVideoParser
 }

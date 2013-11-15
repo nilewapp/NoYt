@@ -22,15 +22,24 @@ import spray.http.MediaType
 import spray.http.MediaTypes._
 import spray.routing.Directives._
 
+/**
+ * Defies routes to handle Assets such as stylesheets and javascript.
+ */
 trait AssetService {
 
   private val config = ConfigFactory.load().getConfig("assets")
 
+  /**
+   * Returns the contents of a resource from a path.
+   */
   private def resource(path: String) = {
     val url = getClass.getResource(path)
     Source.fromURL(url).mkString
   }
 
+  /**
+   * Returns a route to some asset.
+   */
   private def asset(mediaType: MediaType, dir: String, file: String) = {
     respondWithMediaType(mediaType) {
       complete {
@@ -39,9 +48,15 @@ trait AssetService {
     }
   }
 
+  /**
+   * Returns a route to a css file.
+   */
   def stylesheet(file: String) =
     asset(`text/css`, "stylesheets", file)
 
+  /**
+   * Returns a route to a javascript file.
+   */
   def javascript(file: String) =
     asset(`application/javascript`, "javascript", file)
 

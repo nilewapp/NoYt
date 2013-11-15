@@ -17,8 +17,14 @@ package com.mooo.nilewapps.noyt.net
 
 object YoutubeAPI {
 
+  /**
+   * Base URL of the Youtube API.
+   */
   val BaseURL = "https://gdata.youtube.com"
 
+  /**
+   * Returns the URL for the video feed of a channel.
+   */
   def jsonUploadsFeedURL(channel: String, maxResults: Int) =
     BaseURL + "/feeds/api/users/" + channel + "/uploads?alt=json&max-results=" + maxResults
 }
