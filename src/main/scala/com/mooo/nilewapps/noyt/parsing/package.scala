@@ -24,5 +24,5 @@ package object parsing {
   /**
    * Parses Video information from a String.
    */
-  type VideoParser = Seq[Future[Option[String]]] => Seq[Future[Seq[Video]]]
+  type VideoParser = Option[String] => Seq[Video]
 }

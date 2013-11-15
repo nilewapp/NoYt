@@ -17,10 +17,6 @@ package com.mooo.nilewapps.noyt.parsing
 
 import java.text.SimpleDateFormat
 import java.util.Date
-import scala.concurrent._
-import scala.concurrent.duration._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.language.postfixOps
 
 import spray.json._
 import spray.json.DefaultJsonProtocol._
@@ -68,14 +64,12 @@ object JsonVideoParser extends VideoParser {
     }
   }
 
-  def apply(jsonString: Seq[Future[Option[String]]]): Seq[Future[Seq[Video]]] = {
+  def apply(jsonString: Option[String]): Seq[Video] = {
     def feed(json: String) = json.asJson.asJsObject.getFields("feed").head.asJsObject
 
-    jsonString map {
-      _ map {
-        case Some(json) => videos(feed(json))
-        case None => Seq()
-      }
+    jsonString match {
+      case Some(json) => videos(feed(json))
+      case None => Seq()
     }
   }
 }

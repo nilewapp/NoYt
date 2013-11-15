@@ -17,6 +17,7 @@ package com.mooo.nilewapps.noyt.service
 
 import scala.concurrent._
 import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
 
 import spray.routing.Directives._
@@ -31,8 +32,8 @@ trait FeedService {
    * Generates a subscription feed.
    */
   def feed(channels: Seq[String]): Seq[Video] = {
-    (JsonVideoParser(channels.map(ChannelFeedJsonLoader(_))) flatMap {
-      Await.result(_, 10 seconds)
+    (channels.map(ChannelFeedJsonLoader(_)).map(_.map(JsonVideoParser(_))) flatMap {
+      Await.result(_, 20 seconds)
     } toList).sortBy(_.publishTime).reverse
   }
 }
