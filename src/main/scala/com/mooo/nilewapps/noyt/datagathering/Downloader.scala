@@ -15,7 +15,7 @@
  */
 package com.mooo.nilewapps.noyt.datagathering
 
-import java.io.FileNotFoundException
+import java.io.IOException
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
@@ -29,7 +29,7 @@ class Downloader extends Gatherer {
     try {
       Some(Source.fromURL(url).mkString)
     } catch {
-      case e: FileNotFoundException => None
+      case e: IOException => None
     }
   }
 }
