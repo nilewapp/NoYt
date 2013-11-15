@@ -34,12 +34,10 @@ object Boot extends App with SslConfig {
 
   val config = ConfigFactory.load()
 
+  /* Apply proxy settings */
   if (config.getBoolean("http-proxy.use-proxy")) {
-    val proxyHost = config.getString("http-proxy.host")
-    val proxyPort = config.getString("http-proxy.port")
-
-    System.setProperty("proxyHost", proxyHost)
-    System.setProperty("proxyPort", proxyPort)
+    System.setProperty("proxyHost", config.getString("http-proxy.host"))
+    System.setProperty("proxyPort", config.getString("http-proxy.port"))
   }
 
   /* Create and bind the http server */
