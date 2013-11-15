@@ -32,9 +32,8 @@ class FeedGenerator {
       maxResults: Int): Future[Seq[Video]] = {
     Future.sequence(channels.map(downloadFeed(_, maxResults))).map {
       _.flatMap(parseFeed(_))
-        .sortBy(_.publishTime)
-        .reverse
-        .slice(0, maxResults)
+        .sortWith(_.publishTime.get after _.publishTime.get)
+        .take(maxResults)
     }
   }
 }
