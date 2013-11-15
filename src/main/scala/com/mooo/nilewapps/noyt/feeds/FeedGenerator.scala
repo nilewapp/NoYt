@@ -13,27 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.service
+package com.mooo.nilewapps.noyt.feeds
 
-import scala.concurrent._
-import scala.concurrent.duration._
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.language.postfixOps
-
-import spray.routing.Directives._
 
 import com.mooo.nilewapps.noyt.data.Video
-import com.mooo.nilewapps.noyt.datagathering.ChannelFeedJsonLoader
-import com.mooo.nilewapps.noyt.parsing.JsonVideoParser
+import com.mooo.nilewapps.noyt.net.ChannelFeedJsonLoader._
+import com.mooo.nilewapps.noyt.parsing.JsonVideoParser._
 
-trait FeedService {
+class FeedGenerator {
 
   /**
    * Generates a subscription feed.
    */
-  def feed(channels: Seq[String]): Seq[Video] = {
-    (channels.map(ChannelFeedJsonLoader(_)).map(_.map(JsonVideoParser(_))) flatMap {
-      Await.result(_, 20 seconds)
-    } toList).sortBy(_.publishTime).reverse
+  def feeds(
+      channels: Seq[String],
+      maxResults: Int): Future[Seq[Video]] = {
+    Future.sequence(channels.map(downloadFeed(_, maxResults))).map {
+      _.flatMap(parseFeed(_))
+        .sortBy(_.publishTime)
+        .reverse
+        .slice(0, maxResults)
+    }
   }
+}
+
+object FeedGenerator {
+
+  def feeds = new FeedGenerator().feeds _
 }

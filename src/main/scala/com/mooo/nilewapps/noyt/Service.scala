@@ -15,21 +15,11 @@
  */
 package com.mooo.nilewapps.noyt
 
-import java.util.concurrent.TimeoutException
-import javax.net.ssl.SSLException
-import scala.concurrent.duration._
-import scala.language.postfixOps
-
 import akka.actor.Actor
-import com.typesafe.config._
 import spray.http.MediaTypes._
-import spray.http.StatusCodes._
-import spray.httpx.SprayJsonSupport._
-import spray.routing.{ExceptionHandler, HttpService}
-import spray.util.LoggingContext
+import spray.routing.HttpService
 
-import com.mooo.nilewapps.noyt.data.Video
-  import com.mooo.nilewapps.noyt.service.{AssetService, FeedService}
+import com.mooo.nilewapps.noyt.services.{AssetService, FeedService}
 
 /**
  * Actor that runs the service.
@@ -47,13 +37,6 @@ trait Service
   with AssetService
   with FeedService {
 
-  implicit def timeoutExceptionHandler(implicit log: LoggingContext) =
-    ExceptionHandler {
-      case e: TimeoutException => ctx =>
-        log.warning("Request {} could not be handled normally", ctx.request)
-        ctx.complete(InternalServerError, "Service is taking too long to complete your request.")
-    }
-
   val routes = {
     get {
       path("") {
@@ -63,19 +46,9 @@ trait Service
           }
         }
       } ~
-      path("stylesheets" / Rest) { resource =>
-        stylesheet(resource)
-      } ~
-      path("javascript" / Rest) { resource =>
-        javascript(resource)
-      } ~
-      path("feed" / Rest) { channels =>
-        respondWithMediaType(`text/html`) {
-          complete {
-            html.feed.render(feed(channels.split('+')).slice(0, 25)).body
-          }
-        }
-      }
+      path("stylesheets" / Rest) { stylesheet(_) } ~
+      path("javascript" / Rest) { javascript(_) } ~
+      path("feed" / Rest) { feed(_) }
     }
   }
 }

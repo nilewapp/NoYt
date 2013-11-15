@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.datagathering
+package com.mooo.nilewapps.noyt
 
-object YoutubeAPI {
+import scala.concurrent.Future
 
-  val BaseURL = "https://gdata.youtube.com"
+package object net {
 
-  def jsonUploadsFeedURL(channel: String, maxResults: Int = 25) =
-    BaseURL + "/feeds/api/users/" + channel + "/uploads?alt=json&max-results=" + maxResults
+  type Gatherer = String => Future[Option[String]]
 }

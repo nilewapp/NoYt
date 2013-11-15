@@ -19,16 +19,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import spray.json._
-import spray.json.DefaultJsonProtocol._
 
 import com.mooo.nilewapps.noyt.data.Video
 
-object JsonVideoParser extends VideoParser {
+class JsonVideoParser extends VideoParser {
 
   val TimeFormat = "yyyy-MM-dd'T'HH:mm:SS.s'Z'"
 
   def parseDate(date: String) =
     new SimpleDateFormat(TimeFormat).parse(date)
+
+  def feed(json: String) =
+    json.asJson.asJsObject.getFields("feed").head.asJsObject
 
   def author(feed: JsObject) = feed.fields.get("author") match {
     case Some(JsArray(List(JsObject(authorFields), _*))) =>
@@ -42,7 +44,7 @@ object JsonVideoParser extends VideoParser {
     case _ => None
   }
 
-  def videos(feed: JsObject) = {
+  def videos(feed: JsObject): Seq[Video] = {
     val auth = author(feed)
     feed.fields.get("entry") match {
       case Some(JsArray(entries)) => entries map {
@@ -64,12 +66,13 @@ object JsonVideoParser extends VideoParser {
     }
   }
 
-  def apply(jsonString: Option[String]): Seq[Video] = {
-    def feed(json: String) = json.asJson.asJsObject.getFields("feed").head.asJsObject
-
-    jsonString match {
-      case Some(json) => videos(feed(json))
-      case None => Seq()
-    }
+  def apply(jsonString: Option[String]): Seq[Video] = jsonString match {
+    case Some(json) => videos(feed(json))
+    case None => Seq()
   }
+}
+
+object JsonVideoParser {
+
+  def parseFeed = new JsonVideoParser
 }

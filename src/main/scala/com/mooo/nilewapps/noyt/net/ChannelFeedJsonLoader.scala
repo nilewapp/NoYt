@@ -13,23 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.datagathering
+package com.mooo.nilewapps.noyt.net
 
-import java.io.IOException
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.io.Source
+import scala.concurrent.Future
 
-class Downloader extends Gatherer {
+import com.typesafe.config._
+
+/**
+ * Loads the HTML of a channels video feed.
+ */
+class ChannelFeedJsonLoader(val gatherer: Gatherer) {
 
   /**
-   * Downloads the contents of a URL.
+   * Downloads the feed of a channel.
    */
-  def apply(url: String): Future[Option[String]] = future {
-    try {
-      Some(Source.fromURL(url).mkString)
-    } catch {
-      case e: IOException => None
-    }
+  def apply(channel: String, maxResults: Int): Future[Option[String]] = {
+    gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults))
   }
+}
+
+object ChannelFeedJsonLoader {
+
+  /**
+   * Factory method.
+   */
+  def downloadFeed =
+    new ChannelFeedJsonLoader(new Downloader)
 }

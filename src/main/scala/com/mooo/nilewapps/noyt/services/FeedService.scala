@@ -13,36 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.service
+package com.mooo.nilewapps.noyt.services
 
-import scala.io.Source
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.postfixOps
 
-import com.typesafe.config._
-import spray.http.MediaType
 import spray.http.MediaTypes._
 import spray.routing.Directives._
+import spray.routing.RequestContext
 
-trait AssetService {
+import com.mooo.nilewapps.noyt.feeds.FeedGenerator._
 
-  private val config = ConfigFactory.load().getConfig("assets")
+trait FeedService {
 
-  private def resource(path: String) = {
-    val url = getClass.getResource(path)
-    Source.fromURL(url).mkString
-  }
-
-  private def asset(mediaType: MediaType, dir: String, file: String) = {
-    respondWithMediaType(mediaType) {
-      complete {
-        resource(config.getString(dir) + file)
+  def feed(channels: String): RequestContext => Unit = {
+    parameters('maxResults.as[Int] ?) { maxResults =>
+      respondWithMediaType(`text/html`) {
+        complete {
+          feeds(channels.split('+'), maxResults.getOrElse(25)) map {
+            html.feed.render(_).body
+          }
+        }
       }
     }
   }
-
-  def stylesheet(file: String) =
-    asset(`text/css`, "stylesheets", file)
-
-  def javascript(file: String) =
-    asset(`application/javascript`, "javascript", file)
-
 }
