@@ -1,0 +1,16 @@
+@(v: com.mooo.nilewapps.noyt.data.Video)
+<li class="feed-item">
+  <div class="feed-item-image">
+    @videoLink(v) {
+      <img width="196" src="https://i1.ytimg.com/vi/@v.id/mqdefault.jpg" alt="Thumbnail" >
+      </img>
+    }
+  </div>
+  <div class="feed-item-link">
+    @videoLink(v) {
+      @v.title
+    }
+  </div>
+  <div class="feed-item-data">@v.user Published On: @v.publishTime</div>
+</li>
+
