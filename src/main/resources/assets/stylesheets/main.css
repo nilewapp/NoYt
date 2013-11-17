@@ -8,16 +8,6 @@
   background-color: white;
 }
 
-.feeds-head {
-  background-color: #111111;
-  color: #ffffff;
-}
-
-.feeds-head:hover {
-  background-color: #ffffff;
-  color: #111111;
-}
-
 ul.channel-list {
   list-style: none;
   float: left;
@@ -25,16 +15,21 @@ ul.channel-list {
   list-style-position: inside;
 }
 
-li.channel-list-item {
+.channel-list-item {
   display: block; 
   padding: 3px;
-  color: #333333;
+  color: #111111;
 }
 
-li.channel-list-item:hover {
+.channel-list-item:hover {
   text-decoration: none;
   background-color: #111111;
-  color: #eeeeee;
+  color: white;
+}
+
+#selected {
+  background-color: #111111;
+  color: white;
 }
 
 a {

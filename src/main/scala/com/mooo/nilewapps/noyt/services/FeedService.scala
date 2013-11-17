@@ -35,7 +35,7 @@ trait FeedService {
         complete {
           /* Download, parse, aggregate and render feeds */
           feeds(select.getOrElse(channels).split('+'), maxResults.getOrElse(25)) map {
-            html.feed.render(channels, _).body
+            html.feed.render(channels, select,  _).body
           }
         }
       }

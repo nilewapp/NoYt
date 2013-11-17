@@ -1,6 +1,6 @@
 @(channels: String, select: String)(content: Html)
-<a href=@{
+<a href="@{
     com.typesafe.config.ConfigFactory.load().getString("http-server.domain") + 
-    "feed/" + channels + "?select=" + select}>
+    "feed/" + channels + (if (select == "") "" else "?select=" + select)}">
   @content
 </a>

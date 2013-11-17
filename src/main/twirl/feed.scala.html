@@ -1,20 +1,30 @@
-@(channels: String, videos: Seq[com.mooo.nilewapps.noyt.data.Video])
+@(channels: String, selected: Option[String], videos: Seq[com.mooo.nilewapps.noyt.data.Video])
 @main(title = "Feed") {
   <ul class="channel-list">
-    <a href=@{
-        com.typesafe.config.ConfigFactory.load().getString("http-server.domain") + 
-        "feed/" + channels}>
-      <h1 class="feeds-head">Feeds</h1>
-    </a>
+    @channelLink(channels, "") {
+      <h1 @{selected match {
+            case None => "id=selected"
+            case _ => ""
+          }}
+          class="channel-list-item">
+        Feeds
+      </h1>
+    }
     @channels.split('+').sorted.map { c =>
       @channelLink(channels, c) {
-        <li class="channel-list-item">@c</li>
+        <li @{selected match {
+              case Some(name) if name == c => "id=selected"
+              case _ => ""
+            }}
+            class="channel-list-item">
+          @c
+        </li>
       }
     }
   </ul>
   <ul class="feed-list">
     @videos.map { v =>
       @feedItem(channels, v)
-    } 
+    }
   </ul>
 }
