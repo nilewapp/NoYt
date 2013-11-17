@@ -1,0 +1,7 @@
+@(publishTime: Option[java.util.Date])
+<span class="feed-item-time">
+@{ publishTime.map { d =>
+  val f = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm")
+  f.format(d)
+}}
+</span>

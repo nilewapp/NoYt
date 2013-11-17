@@ -1,20 +1,86 @@
 
+.feeds-head {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.feeds-head:hover {
+  background-color: #ffffff;
+  color: #111111;
+}
+
+ul.channel-list {
+  list-style: none;
+  float: left;
+  height: 100%;
+}
+
+li.channel-list-item {
+  display: block; 
+  padding: 3px;
+  color: #333333;
+}
+
+li.channel-list-item:hover {
+  text-decoration: none;
+  background-color: #111111;
+  color: #eeeeee;
+}
+
+a {
+  text-decoration: none;
+}
+
 ul.feed-list {
   list-style: none;
-  margin-left: 0;
-  padding-left: 1em;
-  text-indent: -1em;
-  font-size: 0.8em;
+  width: 700px;
+  line-height: normal;
+  overflow: hidden;
 }
 
 li.feed-item {
-  margin-bottom: 1em;
+  float: left;
+  margin: 1em;
+  width: 300px;
+  font-size: 0.8em;
+}
+
+.feed-item-text {
+  height: 50px;
 }
 
 .feed-item-title {
-  
+  margin-bottom: 3px;
+}
+
+.feed-item-title a {
+  color: #2288ff;
+  font-weight: bold;
+}
+
+.feed-item-title a:hover {
+  text-decoration: underline;
 }
 
 .feed-item-data {
+  font-size: 0.9em;
+}
 
+.feed-item-user {
+  font-weight: bold;
+  color: #11aa55;
+}
+
+.feed-item-user a {
+  color: #11aa55;
+}
+
+.feed-item-user a:hover {
+  text-decoration: underline;
+}
+
+.feed-item-time {
+  color: #777777;
+  font-weight: bold;
+  font-size: 0.8em;
 }

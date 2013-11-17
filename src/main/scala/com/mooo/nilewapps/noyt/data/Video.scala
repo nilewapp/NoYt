@@ -22,6 +22,7 @@ case class Video(
   title: Option[String] = None,
   duration: Option[String] = None,
   id: Option[String] = None,
-  user: Option[String] = None,
+  channel: Option[String] = None,
+  author: Option[String] = None,
   views: Option[Int] = None,
   publishTime: Option[java.util.Date] = None)

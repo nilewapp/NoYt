@@ -48,16 +48,18 @@ class JsonVideoParser extends VideoParser {
   /**
    * Returns the author of a feed from the "feed" Json object.
    */
-  def author(feed: JsObject) = feed.fields.get("author") match {
-    case Some(JsArray(List(JsObject(authorFields), _*))) =>
-      authorFields.get("name") flatMap {
-        case JsObject(nameFields) => nameFields.get("$t") match {
-          case Some(JsString(name)) => Some(name)
-          case Some(_) | None => None
-        }
+  def author(feed: JsObject): Seq[Option[String]] = feed.fields.get("author") match {
+    case Some(JsArray(list)) => list.headOption match {
+      case Some(o: JsObject) => o.getFields("name", "uri") map {
+        case JsObject(t) => t.get("$t")
+        case _ => None
+      } map {
+        case Some(JsString(name)) => Some(name)
         case _ => None
       }
-    case _ => None
+      case _ => Seq()
+    }
+    case _ => Seq()
   }
 
   /**
@@ -65,7 +67,6 @@ class JsonVideoParser extends VideoParser {
    * information.
    */
   def videos(feed: JsObject): Seq[Video] = {
-
     /* Parse author */
     val auth = author(feed)
 
@@ -87,7 +88,8 @@ class JsonVideoParser extends VideoParser {
           id = entry.head.map(_.split("/").last),
           publishTime = entry(1).map(parseDate(_)),
           title = entry(2),
-          user = auth)
+          author = auth(0),
+          channel = auth(1).map(_.split("/").last))
       }
       case _ => Seq()
     }

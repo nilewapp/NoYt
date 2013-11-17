@@ -1,9 +1,20 @@
-@(videos: Seq[com.mooo.nilewapps.noyt.data.Video])
+@(channels: String, videos: Seq[com.mooo.nilewapps.noyt.data.Video])
 @main(title = "Feed") {
-  <h1>Feed</h1>
+  <ul class="channel-list">
+    <a href=@{
+        com.typesafe.config.ConfigFactory.load().getString("http-server.domain") + 
+        "feed/" + channels}>
+      <h1 class="feeds-head">Feeds</h1>
+    </a>
+    @channels.split('+').sorted.map { c =>
+      @channelLink(channels, c) {
+        <li class="channel-list-item">@c</li>
+      }
+    }
+  </ul>
   <ul class="feed-list">
     @videos.map { v =>
-      @feedItem(v)
+      @feedItem(channels, v)
     } 
   </ul>
 }

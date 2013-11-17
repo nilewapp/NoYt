@@ -1,16 +1,27 @@
-@(v: com.mooo.nilewapps.noyt.data.Video)
+@(channels: String, v: com.mooo.nilewapps.noyt.data.Video)
 <li class="feed-item">
   <div class="feed-item-image">
     @videoLink(v) {
-      <img width="196" src="https://i1.ytimg.com/vi/@v.id/mqdefault.jpg" alt="Thumbnail" >
-      </img>
+      <img width="288" src="https://i1.ytimg.com/vi/@v.id/mqdefault.jpg" alt="Thumbnail"/>
     }
   </div>
-  <div class="feed-item-link">
-    @videoLink(v) {
-      @v.title
-    }
+  <div class="feed-item-text">
+    <div class="feed-item-title">
+      @videoLink(v) {
+        @{ v.title.map { t =>
+          val max = 68
+          if (t.length > max) t.take(max) + "..."
+          else t
+        }}
+      }
+    </div>
+    <div class="feed-item-data">
+      <span class="feed-item-user">
+          @html.channelLink(channels, v.channel.getOrElse("")) {
+            @v.author
+          }
+      </span>
+      @html.publishTime(v.publishTime)
+    </div>
   </div>
-  <div class="feed-item-data">@v.user Published On: @v.publishTime</div>
 </li>
-

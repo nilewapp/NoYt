@@ -30,12 +30,12 @@ trait FeedService {
    * Returns a route to a video feed.
    */
   def feed(channels: String): RequestContext => Unit = {
-    parameters('maxResults.as[Int] ?) { maxResults =>
+    parameters('maxResults.as[Int] ?, 'select ?) { (maxResults, select) =>
       respondWithMediaType(`text/html`) {
         complete {
           /* Download, parse, aggregate and render feeds */
-          feeds(channels.split('+'), maxResults.getOrElse(25)) map {
-            html.feed.render(_).body
+          feeds(select.getOrElse(channels).split('+'), maxResults.getOrElse(25)) map {
+            html.feed.render(channels, _).body
           }
         }
       }
