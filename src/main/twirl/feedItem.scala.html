@@ -19,9 +19,9 @@
     </div>
     <div class="feed-item-data">
       <span class="feed-item-user">
-          @html.channelLink(channels, v.channel.getOrElse("")) {
-            @v.author
-          }
+        @youtubeChannelLink(v.channel) {
+          @v.author
+        }
       </span>
       @html.publishTime(v.publishTime)
     </div>
