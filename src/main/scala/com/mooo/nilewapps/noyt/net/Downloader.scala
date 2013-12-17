@@ -25,7 +25,7 @@ class Downloader extends Gatherer {
    */
   def apply(url: String, tries: Int): Option[String] = {
     try {
-      Some(Source.fromURL(url).mkString)
+      Some(Source.fromURL(url)(scala.io.Codec("UTF-8")).mkString)
     } catch {
       case e: IOException => println("Download Error " + url); println(e);
         if (tries <= 1) None
