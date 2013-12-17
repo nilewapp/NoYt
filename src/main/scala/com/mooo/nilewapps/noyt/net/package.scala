@@ -15,12 +15,10 @@
  */
 package com.mooo.nilewapps.noyt
 
-import scala.concurrent.Future
-
 package object net {
 
   /**
    * Type used to get Data with.
    */
-  type Gatherer = String => Future[Option[String]]
+  type Gatherer = String => Option[String]
 }

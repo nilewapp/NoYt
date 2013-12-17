@@ -15,7 +15,8 @@
  */
 package com.mooo.nilewapps.noyt.net
 
-import scala.concurrent.Future
+import scala.concurrent._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import com.typesafe.config._
 
@@ -27,9 +28,8 @@ class ChannelFeedJsonLoader(val gatherer: Gatherer) {
   /**
    * Downloads the feed of a channel using the Youtube API.
    */
-  def apply(channel: String, maxResults: Int): Future[Option[String]] = {
-    gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults))
-  }
+  def apply(channel: String, maxResults: Int): Future[Option[String]] =
+    future(gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults)))
 }
 
 object ChannelFeedJsonLoader {

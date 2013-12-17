@@ -16,8 +16,6 @@
 package com.mooo.nilewapps.noyt.net
 
 import java.io.IOException
-import scala.concurrent._
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.io.Source
 
 class Downloader extends Gatherer {
@@ -25,11 +23,15 @@ class Downloader extends Gatherer {
   /**
    * Downloads the contents of a URL.
    */
-  def apply(url: String): Future[Option[String]] = future {
+  def apply(url: String, tries: Int): Option[String] = {
     try {
       Some(Source.fromURL(url).mkString)
     } catch {
-      case e: IOException => None
+      case e: IOException => println("Download Error " + url); println(e);
+        if (tries <= 1) None
+        else apply(url, tries - 1)
     }
   }
+
+  def apply(url: String) = apply(url, 3)
 }
