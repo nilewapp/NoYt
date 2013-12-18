@@ -15,6 +15,8 @@
  */
 package se.weln.noyt.boot
 
+import java.io.File
+
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
 import spray.can.Http
@@ -25,25 +27,43 @@ import se.weln.noyt.ServiceActor
 /**
  * Starts the server.
  */
-object Boot extends App with SslConfig {
+object Boot extends SslConfig {
 
-  implicit val system = ActorSystem("NoYt")
+  case class Config(file: File = null)
 
-  /* Create and start the service actor */
-  val handler = system.actorOf(Props[ServiceActor], "handler")
-
-  ServerConfig.load()
-
-  val config = ServerConfig.config
-
-  /* Apply proxy settings */
-  if (config.proxyEnable) {
-    System.setProperty("proxyHost", config.proxyHost)
-    System.setProperty("proxyPort", config.proxyPort)
+  val optionsParser = new scopt.OptionParser[Config]("noyt") {
+    arg[File]("<config file>") optional() action { (x, c) =>
+      c.copy(file = x)
+    } text("Optional path to configuration file")
   }
 
-  /* Create and bind the http server */
-  IO(Http) ! Http.Bind(handler,
-    config.interface,
-    port = config.port)
+  def main(args: Array[String]) {
+
+    implicit val system = ActorSystem("NoYt")
+
+    /* Create and start the service actor */
+    val handler = system.actorOf(Props[ServiceActor], "handler")
+
+    optionsParser.parse(args, Config()) map { options =>
+
+      ServerConfig.load(options.file)
+
+      val config = ServerConfig.config
+
+      /* Apply proxy settings */
+      if (config.proxyEnable) {
+        System.setProperty("proxyHost", config.proxyHost)
+        System.setProperty("proxyPort", config.proxyPort)
+      }
+
+      /* Create and bind the http server */
+      IO(Http) ! Http.Bind(handler,
+        config.interface,
+        port = config.port)
+
+    } getOrElse {
+
+    }
+
+  }
 }

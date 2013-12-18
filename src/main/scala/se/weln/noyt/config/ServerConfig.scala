@@ -15,6 +15,8 @@
  */
 package se.weln.noyt.config
 
+import java.io.File
+
 import com.typesafe.config._
 
 case class ServerConfig(
@@ -35,8 +37,12 @@ object ServerConfig {
 
   def config = _config
 
-  def load(path: String = "application.conf") {
-    val c = ConfigFactory.load(path)
+  def load(file: File = null) {
+
+    val c =
+      if (file == null) ConfigFactory.load()
+      else ConfigFactory.parseFile(file).resolve()
+
     _config = ServerConfig(
       domain = c.getString("http-server.domain"),
       interface = c.getString("http-server.interface"),
