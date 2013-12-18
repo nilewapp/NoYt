@@ -61,9 +61,6 @@ object Boot extends SslConfig {
         config.interface,
         port = config.port)
 
-    } getOrElse {
-
     }
-
   }
 }
