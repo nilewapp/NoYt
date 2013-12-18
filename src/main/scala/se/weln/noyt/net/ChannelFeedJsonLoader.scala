@@ -18,8 +18,6 @@ package se.weln.noyt.net
 import scala.concurrent._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import com.typesafe.config._
-
 /**
  * Defines a method to download a feed using the Youtube API.
  */

@@ -20,7 +20,7 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 
 import spray.io._
 
-import com.typesafe.config._
+import se.weln.noyt.config.ServerConfig
 
 /**
  * Provides the SSL configuration for the server
@@ -28,10 +28,10 @@ import com.typesafe.config._
 trait SslConfig {
 
   implicit def sslContext: SSLContext = {
-    val config = ConfigFactory.load().getConfig("truststore")
+    val config = ServerConfig.config
 
-    val keyStoreResource = config.getString("path")
-    val password = config.getString("pass")
+    val keyStoreResource = config.truststorePath
+    val password = config.truststorePassword
 
     val keyStore = KeyStore.getInstance("jks")
     keyStore.load(

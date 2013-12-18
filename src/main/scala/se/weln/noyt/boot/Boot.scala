@@ -17,9 +17,9 @@ package se.weln.noyt.boot
 
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
-import com.typesafe.config._
 import spray.can.Http
 
+import se.weln.noyt.config.ServerConfig
 import se.weln.noyt.ServiceActor
 
 /**
@@ -32,16 +32,18 @@ object Boot extends App with SslConfig {
   /* Create and start the service actor */
   val handler = system.actorOf(Props[ServiceActor], "handler")
 
-  val config = ConfigFactory.load()
+  ServerConfig.load()
+
+  val config = ServerConfig.config
 
   /* Apply proxy settings */
-  if (config.getBoolean("http-proxy.use-proxy")) {
-    System.setProperty("proxyHost", config.getString("http-proxy.host"))
-    System.setProperty("proxyPort", config.getString("http-proxy.port"))
+  if (config.proxyEnable) {
+    System.setProperty("proxyHost", config.proxyHost)
+    System.setProperty("proxyPort", config.proxyPort)
   }
 
   /* Create and bind the http server */
   IO(Http) ! Http.Bind(handler,
-    config.getString("http-server.interface"),
-    port = config.getInt("http-server.port"))
+    config.interface,
+    port = config.port)
 }

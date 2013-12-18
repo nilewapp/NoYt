@@ -17,17 +17,16 @@ package se.weln.noyt.services
 
 import scala.io.Source
 
-import com.typesafe.config._
 import spray.http.MediaType
 import spray.http.MediaTypes._
 import spray.routing.Directives._
+
+import se.weln.noyt.config.ServerConfig
 
 /**
  * Defies routes to handle Assets such as stylesheets and javascript.
  */
 trait AssetService {
-
-  private val config = ConfigFactory.load().getConfig("assets")
 
   /**
    * Returns the contents of a resource from a path.
@@ -47,7 +46,7 @@ trait AssetService {
   private def asset(mediaType: MediaType, dir: String, file: String) = {
     respondWithMediaType(mediaType) {
       complete {
-        resource(config.getString(dir) + file)
+        resource(dir + file)
       }
     }
   }
@@ -56,12 +55,12 @@ trait AssetService {
    * Returns a route to a css file.
    */
   def stylesheet(file: String) =
-    asset(`text/css`, "stylesheets", file)
+    asset(`text/css`, ServerConfig.config.stylesheetDir, file)
 
   /**
    * Returns a route to a javascript file.
    */
   def javascript(file: String) =
-    asset(`application/javascript`, "javascript", file)
+    asset(`application/javascript`, ServerConfig.config.javascriptDir, file)
 
 }

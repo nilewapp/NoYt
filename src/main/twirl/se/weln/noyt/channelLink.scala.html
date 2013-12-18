@@ -1,6 +1,6 @@
 @(channels: String, select: String)(content: Html)
 <a href="@{
-    com.typesafe.config.ConfigFactory.load().getString("http-server.domain") + 
+    se.weln.noyt.config.ServerConfig.config.domain +
     "feed/" + channels + (if (select == "") "" else "?select=" + select)}">
   @content
 </a>
