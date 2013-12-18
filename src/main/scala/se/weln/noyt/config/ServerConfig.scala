@@ -37,6 +37,10 @@ object ServerConfig {
 
   def config = _config
 
+  /**
+   * Loads a configuration file. If no file is specified the default
+   * configuration in "application.conf" is loaded.
+   */
   def load(file: File = null) {
 
     val c =
