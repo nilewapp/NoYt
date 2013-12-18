@@ -1,11 +1,9 @@
 @(channels: String, selected: String, videos: Seq[se.weln.noyt.data.Video], maxResults: Int, startIndex: Int)
 @main(title = "Feed") {
-  @channelLink(channels, "", maxResults, 0, "") {
-    <h1 class="channel-list-item">NoYt</h1>
-  }
-} {
-  @feedNavButtons(channels, selected, maxResults, startIndex)
   <ul class="channel-list">
+    @channelLink(channels, "", maxResults, 0, "") {
+      <h1>NoYt</h1>
+    }
     @channels.split('+').sorted.map { c =>
       @channelLink(channels, c, maxResults, 0, "") {
         <li @{if (selected == c) "id=selected" else ""}
@@ -15,6 +13,7 @@
       }
     }
   </ul>
+  @feedNavButtons(channels, selected, maxResults, startIndex)
   <ul class="feed-list">
     @videos.map { v =>
       @feedItem(channels, v)
