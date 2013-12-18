@@ -26,8 +26,12 @@ class ChannelFeedJsonLoader(val gatherer: Gatherer) {
   /**
    * Downloads the feed of a channel using the Youtube API.
    */
-  def apply(channel: String, maxResults: Int): Future[Option[String]] =
-    future(gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults)))
+  def apply(
+      channel: String,
+      maxResults: Int): Future[Option[String]] = {
+    val query = YoutubeAPI.jsonUploadsFeedURL(channel, maxResults)
+    future(gatherer(query))
+  }
 }
 
 object ChannelFeedJsonLoader {

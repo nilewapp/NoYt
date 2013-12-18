@@ -1,21 +1,14 @@
-@(channels: String, selected: Option[String], videos: Seq[se.weln.noyt.data.Video])
+@(channels: String, selected: String, videos: Seq[se.weln.noyt.data.Video], maxResults: Int, startIndex: Int)
 @main(title = "Feed") {
+  @channelLink(channels, "", maxResults, 0, "") {
+    <h1 class="channel-list-item">NoYt</h1>
+  }
+} {
+  @feedNavButtons(channels, selected, maxResults, startIndex)
   <ul class="channel-list">
-    @channelLink(channels, "") {
-      <h1 @{selected match {
-            case None => "id=selected"
-            case _ => ""
-          }}
-          class="channel-list-item">
-        Feeds
-      </h1>
-    }
     @channels.split('+').sorted.map { c =>
-      @channelLink(channels, c) {
-        <li @{selected match {
-              case Some(name) if name == c => "id=selected"
-              case _ => ""
-            }}
+      @channelLink(channels, c, maxResults, 0, "") {
+        <li @{if (selected == c) "id=selected" else ""}
             class="channel-list-item">
           @c
         </li>
@@ -27,4 +20,5 @@
       @feedItem(channels, v)
     }
   </ul>
+  @feedNavButtons(channels, selected, maxResults, startIndex)
 }

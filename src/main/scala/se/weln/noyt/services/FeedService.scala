@@ -31,14 +31,22 @@ trait FeedService {
    * Returns a route to a video feed.
    */
   def feed(channels: String): RequestContext => Unit = {
-    parameters('maxResults.as[Int] ?, 'select ?) { (maxResults, select) =>
+    parameters('maxResults.as[Int] ?, 'startIndex.as[Int] ?, 'select ?) {
+      (maxResults, startIndex, select) =>
       respondWithMediaType(`text/html`) {
         complete {
           /* Download, parse, aggregate and render feeds */
           val channelList =
             select.getOrElse(channels).split('+').filter(!_.isEmpty)
-          feeds(channelList, maxResults.getOrElse(16)) map {
-            html.feed.render(channels, select, _).body
+
+          val sel = select.getOrElse("")
+
+          val max = maxResults.getOrElse(16)
+
+          val start = startIndex.getOrElse(0)
+
+          feeds(channelList, max, start) map {
+            html.feed.render(channels, sel, _, max, start).body
           }
         }
       }

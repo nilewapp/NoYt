@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(header: Html)(content: Html)
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,6 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
   </head>
   <body>
+    <section class="header">
+      @header
+    </section>
     <section class="content">
       @content
     </section>

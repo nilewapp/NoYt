@@ -1,6 +1,9 @@
-@(channels: String, select: String)(content: Html)
+@(channels: String, select: String, maxResults: Int, startIndex: Int, id: String)(content: Html)
 <a href="@{
     se.weln.noyt.config.ServerConfig.config.domain +
-    "feed/" + channels + (if (select == "") "" else "?select=" + select)}">
+    "feed/" + channels +
+    (if (select == "") "?" else "?select=" + select + "&") +
+    "maxResults=" + maxResults + "&startIndex=" + startIndex}"
+    @{if (id.isEmpty) "" else "class=%s".format(id)}>
   @content
 </a>

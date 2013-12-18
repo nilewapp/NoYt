@@ -1,0 +1,7 @@
+@(channels: String, selected: String, maxResults: Int, startIndex: Int)
+@channelLink(channels, selected, maxResults,
+  {val index = startIndex - maxResults
+    if (index < 0) 0
+    else index}, "feed-nav-button") {
+  Prev
+}

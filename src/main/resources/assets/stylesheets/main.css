@@ -1,14 +1,28 @@
 
-.content {
+body {
   width: 950px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 1em;
   padding-bottom: 1em;
   background-color: white;
 }
 
+.content {
+  clear: right;
+  margin-bottom: 1em;
+}
+
+h1 {
+  display: block;
+  padding: 3px;
+  margin-left: 0.8em;
+  font-size: 3em;
+  font-family: "sans";
+  color: #111111;
+}
+
 ul.channel-list {
+  padding-top: 1.5em;
   list-style: none;
   float: left;
   height: 100%;
@@ -36,10 +50,32 @@ a {
   text-decoration: none;
 }
 
+.feed-nav-buttons {
+  float: right;
+  margin-right: 3em;
+  margin-bottom: 1em;
+}
+
+.feed-nav-button {
+  border: 1px solid #111111;
+  background: white;
+  padding: 3px 7px;
+  margin: 7px;
+  color: #111111;
+  vertical-align: middle;
+}
+
+.feed-nav-button:hover {
+  border-top-color: #111111;
+  background: #111111;
+  color: white;
+}
+
 ul.feed-list {
   list-style: none;
   line-height: normal;
   overflow: hidden;
+  clear: right;
 }
 
 li.feed-item {

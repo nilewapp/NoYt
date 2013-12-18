@@ -20,11 +20,12 @@ object YoutubeAPI {
   /**
    * Base URL of the Youtube API.
    */
-  val BaseURL = "https://gdata.youtube.com"
+  val BaseURL =
+    "https://gdata.youtube.com/feeds/api/users/%s/uploads?alt=json&max-results=%d"
 
   /**
    * Returns the URL for the video feed of a channel.
    */
   def jsonUploadsFeedURL(channel: String, maxResults: Int) =
-    BaseURL + "/feeds/api/users/" + channel + "/uploads?alt=json&max-results=" + maxResults
+    BaseURL.format(channel, maxResults)
 }

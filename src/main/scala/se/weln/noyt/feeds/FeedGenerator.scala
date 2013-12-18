@@ -29,10 +29,12 @@ class FeedGenerator {
    */
   def feeds(
       channels: Seq[String],
-      maxResults: Int): Future[Seq[Video]] = {
-    Future.sequence(channels.map(downloadFeed(_, maxResults))).map {
+      maxResults: Int,
+      startIndex: Int): Future[Seq[Video]] = {
+    Future.sequence(channels.map(downloadFeed(_, maxResults + startIndex))) map {
       _.flatMap(parseFeed(_))
         .sortWith(_.publishTime.get after _.publishTime.get)
+        .drop(startIndex)
         .take(maxResults)
     }
   }
