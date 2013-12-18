@@ -13,25 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.net
+package se.weln.noyt
 
-import java.io.IOException
-import scala.io.Source
-
-class Downloader extends Gatherer {
+package object net {
 
   /**
-   * Downloads the contents of a URL.
+   * Type used to get Data with.
    */
-  def apply(url: String, tries: Int): Option[String] = {
-    try {
-      Some(Source.fromURL(url)(scala.io.Codec("UTF-8")).mkString)
-    } catch {
-      case e: IOException => println("Download Error " + url); println(e);
-        if (tries <= 1) None
-        else apply(url, tries - 1)
-    }
-  }
-
-  def apply(url: String) = apply(url, 3)
+  type Gatherer = String => Option[String]
 }

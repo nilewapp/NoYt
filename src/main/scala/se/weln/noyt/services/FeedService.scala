@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.services
+package se.weln.noyt.services
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
@@ -22,7 +22,8 @@ import spray.http.MediaTypes._
 import spray.routing.Directives._
 import spray.routing.RequestContext
 
-import com.mooo.nilewapps.noyt.feeds.FeedGenerator._
+import se.weln.noyt.feeds.FeedGenerator._
+import se.weln.noyt.html
 
 trait FeedService {
 

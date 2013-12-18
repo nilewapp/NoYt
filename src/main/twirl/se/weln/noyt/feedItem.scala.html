@@ -1,4 +1,4 @@
-@(channels: String, v: com.mooo.nilewapps.noyt.data.Video)
+@(channels: String, v: se.weln.noyt.data.Video)
 <li class="feed-item">
   <div class="feed-item-image">
     @videoLink(v) {
@@ -23,7 +23,7 @@
           @v.author
         }
       </span>
-      @html.publishTime(v.publishTime)
+      @publishTime(v.publishTime)
     </div>
   </div>
 </li>

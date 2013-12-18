@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt
+package se.weln.noyt
 
 import akka.actor.Actor
 import spray.http.MediaTypes._
 import spray.routing.HttpService
 
-import com.mooo.nilewapps.noyt.services.{AssetService, FeedService}
+import se.weln.noyt.services.{AssetService, FeedService}
 
 /**
  * Actor that runs the service.

@@ -1,4 +1,4 @@
-organization  := "com.mooo.nilewapps"
+organization  := "se.weln"
 
 name := "NoYt"
 

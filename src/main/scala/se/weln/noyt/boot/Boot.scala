@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.boot
+package se.weln.noyt.boot
 
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
 import com.typesafe.config._
 import spray.can.Http
 
-import com.mooo.nilewapps.noyt.ServiceActor
+import se.weln.noyt.ServiceActor
 
 /**
  * Starts the server.

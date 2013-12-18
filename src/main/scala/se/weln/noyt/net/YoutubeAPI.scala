@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.net
+package se.weln.noyt.net
 
 object YoutubeAPI {
 

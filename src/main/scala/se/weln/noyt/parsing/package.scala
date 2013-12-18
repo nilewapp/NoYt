@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.data
+package se.weln.noyt
 
-/**
- * Defines the information content of a Video.
- */
-case class Video(
-  title: Option[String] = None,
-  duration: Option[String] = None,
-  id: Option[String] = None,
-  channel: Option[String] = None,
-  author: Option[String] = None,
-  views: Option[Int] = None,
-  publishTime: Option[java.util.Date] = None)
+import scala.concurrent._
+
+import se.weln.noyt.data.Video
+
+package object parsing {
+
+  /**
+   * Parses Video information from a String.
+   */
+  type VideoParser = Option[String] => Seq[Video]
+}

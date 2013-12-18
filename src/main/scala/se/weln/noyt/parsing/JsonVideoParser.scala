@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.parsing
+package se.weln.noyt.parsing
 
 import java.text.SimpleDateFormat
 import java.util.Date
 
 import spray.json._
 
-import com.mooo.nilewapps.noyt.data.Video
+import se.weln.noyt.data.Video
 
 /**
  * Defines methods to parse the Json downloaded using the Google Youtube API.

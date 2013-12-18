@@ -13,16 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt
+package se.weln.noyt.net
 
 import scala.concurrent._
+import scala.concurrent.ExecutionContext.Implicits.global
 
-import com.mooo.nilewapps.noyt.data.Video
+import com.typesafe.config._
 
-package object parsing {
+/**
+ * Defines a method to download a feed using the Youtube API.
+ */
+class ChannelFeedJsonLoader(val gatherer: Gatherer) {
 
   /**
-   * Parses Video information from a String.
+   * Downloads the feed of a channel using the Youtube API.
    */
-  type VideoParser = Option[String] => Seq[Video]
+  def apply(channel: String, maxResults: Int): Future[Option[String]] =
+    future(gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults)))
+}
+
+object ChannelFeedJsonLoader {
+
+  /**
+   * Returns a new ChannelFeedJsonLoader with a standard Downloader.
+   */
+  def downloadFeed =
+    new ChannelFeedJsonLoader(new Downloader)
 }

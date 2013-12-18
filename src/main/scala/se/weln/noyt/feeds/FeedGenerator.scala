@@ -13,30 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mooo.nilewapps.noyt.net
+package se.weln.noyt.feeds
 
-import scala.concurrent._
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import com.typesafe.config._
+import se.weln.noyt.data.Video
+import se.weln.noyt.net.ChannelFeedJsonLoader._
+import se.weln.noyt.parsing.JsonVideoParser._
 
-/**
- * Defines a method to download a feed using the Youtube API.
- */
-class ChannelFeedJsonLoader(val gatherer: Gatherer) {
+class FeedGenerator {
 
   /**
-   * Downloads the feed of a channel using the Youtube API.
+   * Generates a subscription feed.
    */
-  def apply(channel: String, maxResults: Int): Future[Option[String]] =
-    future(gatherer(YoutubeAPI.jsonUploadsFeedURL(channel, maxResults)))
+  def feeds(
+      channels: Seq[String],
+      maxResults: Int): Future[Seq[Video]] = {
+    Future.sequence(channels.map(downloadFeed(_, maxResults))).map {
+      _.flatMap(parseFeed(_))
+        .sortWith(_.publishTime.get after _.publishTime.get)
+        .take(maxResults)
+    }
+  }
 }
 
-object ChannelFeedJsonLoader {
+object FeedGenerator {
 
   /**
-   * Returns a new ChannelFeedJsonLoader with a standard Downloader.
+   * Helper method for static access to FeedGenerator.
    */
-  def downloadFeed =
-    new ChannelFeedJsonLoader(new Downloader)
+  def feeds = new FeedGenerator().feeds _
 }
