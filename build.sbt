@@ -29,3 +29,4 @@ seq(Revolver.settings: _*)
 
 seq(Twirl.settings: _*)
 
+seq(com.github.retronym.SbtOneJar.oneJarSettings: _*)
