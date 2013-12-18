@@ -44,8 +44,13 @@ object ServerConfig {
   def load(file: File = null) {
 
     val c =
-      if (file == null) ConfigFactory.load()
-      else ConfigFactory.parseFile(file).resolve()
+      if (file == null) {
+        ConfigFactory.load()
+      } else {
+        val f = ConfigFactory.parseFile(file).resolve()
+        f.checkValid(f)
+        f
+      }
 
     _config = ServerConfig(
       domain = c.getString("http-server.domain"),

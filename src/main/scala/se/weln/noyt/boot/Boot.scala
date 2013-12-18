@@ -34,6 +34,9 @@ object Boot extends SslConfig {
   val optionsParser = new scopt.OptionParser[Config]("noyt") {
     arg[File]("<config file>") optional() action { (x, c) =>
       c.copy(file = x)
+    } validate { x =>
+      if (x.isFile) success
+      else failure("No such file: '" + x.getPath() + "'")
     } text("Optional path to configuration file")
   }
 
@@ -61,6 +64,8 @@ object Boot extends SslConfig {
         config.interface,
         port = config.port)
 
+    } getOrElse {
+      System.exit(1)
     }
   }
 }
