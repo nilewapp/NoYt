@@ -10,7 +10,8 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-featur
 
 resolvers ++= Seq(
   "spray repo" at "http://repo.spray.io/",
-  "spray nightly repo" at "http://nightlies.spray.io/"
+  "spray nightly repo" at "http://nightlies.spray.io/",
+  Resolver.sonatypeRepo("public")
 )
 
 libraryDependencies ++= Seq(
@@ -22,7 +23,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka"   %%  "akka-actor"    % "2.1.4",
   "org.specs2"          %%  "specs2"        % "1.13"    %   "test",
   // config
-  "com.typesafe"        %   "config"        % "1.0.2"
+  "com.typesafe"        %   "config"        % "1.0.2",
+  "com.github.scopt"    %%  "scopt"         % "3.2.0"
 )
 
 seq(Revolver.settings: _*)
