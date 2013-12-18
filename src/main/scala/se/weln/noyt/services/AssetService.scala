@@ -34,7 +34,11 @@ trait AssetService {
    */
   private def resource(path: String) = {
     val url = getClass.getResource(path)
-    Source.fromURL(url).mkString
+    try {
+      Source.fromURL(url).mkString
+    } catch {
+      case e: Exception => ""
+    }
   }
 
   /**
