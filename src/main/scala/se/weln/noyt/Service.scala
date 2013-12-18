@@ -17,6 +17,7 @@ package se.weln.noyt
 
 import akka.actor.Actor
 import spray.http.MediaTypes._
+import spray.http.StatusCodes
 import spray.routing.HttpService
 
 import se.weln.noyt.services.{AssetService, FeedService}
@@ -39,13 +40,7 @@ trait Service
 
   val routes = {
     get {
-      path("") {
-        respondWithMediaType(`text/html`) {
-          complete {
-            html.index.render().body
-          }
-        }
-      } ~
+      path("") { redirect("/feed", StatusCodes.PermanentRedirect) } ~
       path("stylesheets" / Rest) { stylesheet(_) } ~
       path("javascript" / Rest) { javascript(_) } ~
       path("feed" / Rest) { feed(_) }
